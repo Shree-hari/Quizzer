@@ -30,6 +30,23 @@ class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
   QuizBrain quizBrain = QuizBrain();
 
+  void checkAnswer(bool userPickedAnswer){
+
+    bool correctAnswer = quizBrain.getCorrectAnswer();
+
+
+    setState(() {
+
+      if (correctAnswer == true) {
+        scoreKeeper.add(Icon(Icons.check, color: Colors.green,));
+      } else {
+        scoreKeeper.add(Icon(Icons.close, color: Colors.red,));
+      }
+      quizBrain.nextQuestion();
+
+    });
+  }
+
 //  Question q1 = Question(q:'You can lead a cow down stairs but not up stairs.',a:false);
 //  Question q2 = Question(q:'Approximately one quarter of human bones are in the feet.',a:true);
 //  Question q3 = Question(q:'A slug\'s blood is green.',a:true);
@@ -73,20 +90,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked true.
-                bool correctAnswer =
-                    quizBrain.getCorrectAnswer();
-
-                if (correctAnswer == true) {
-                  print('Your answer is correct');
-                } else {
-                  print('Your answer is wrong');
-                }
-
-                setState(() {
-
-                    quizBrain.nextQuestion();
-
-                });
+                checkAnswer(true);
               },
             ),
           ),
@@ -105,25 +109,15 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
-                bool correctAnswer =
-                    quizBrain.getCorrectAnswer();
-
-                if (correctAnswer == false) {
-                  print('Your answer is correct');
-                } else {
-                  print('Your answer is wrong');
-                }
-
-                setState(() {
-
-                   quizBrain.nextQuestion();
-
-                });
+                checkAnswer(false);
               },
             ),
           ),
         ),
-        //TODO: Add a Row here as your score keeper
+        Row(
+          children: scoreKeeper,
+        )
+       
       ],
     );
   }
