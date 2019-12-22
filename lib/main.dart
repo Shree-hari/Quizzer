@@ -1,6 +1,8 @@
-import 'package:Quizzer/question.dart';
-import 'package:Quizzer/quiz_brain.dart';
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'quiz_brain.dart';
+
+QuizBrain quizBrain = QuizBrain();
 
 void main() => runApp(Quizzler());
 
@@ -28,30 +30,56 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
-  QuizBrain quizBrain = QuizBrain();
 
-  void checkAnswer(bool userPickedAnswer){
-
+  void checkAnswer(bool userPickedAnswer) {
     bool correctAnswer = quizBrain.getCorrectAnswer();
 
-
     setState(() {
+      //TODO: Step 4 - Use IF/ELSE to check if we've reached the end of the quiz. If true, execute Part A, B, C, D.
+      //TODO: Step 4 Part A - show an alert using rFlutter_alert (remember to read the docs for the package!)
+      //HINT! Step 4 Part B is in the quiz_brain.dart
+      //TODO: Step 4 Part C - reset the questionNumber,
+      //TODO: Step 4 Part D - empty out the scoreKeeper.
+      if (quizBrain.isFinished()){
+        Alert(
+          context: context,
+          title: 'Finished!',
+          desc: 'You\'ve reached the end of the quiz.',
+            buttons: [
+              DialogButton(
+                child: Text(
+                  "RESTART",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                onPressed: () => Navigator.pop(context),
+                width: 120,
+              )
+            ]
+        ).show();
 
-      if (correctAnswer == true) {
-        scoreKeeper.add(Icon(Icons.check, color: Colors.green,));
+        quizBrain.reset();
+
+        scoreKeeper = [];
+      }
+
+
+      //TODO: Step 5 - If we've not reached the end, ELSE do the answer checking steps below 👇
+      else{
+        if (userPickedAnswer == correctAnswer) {
+        scoreKeeper.add(Icon(
+          Icons.check,
+          color: Colors.green,
+        ));
       } else {
-        scoreKeeper.add(Icon(Icons.close, color: Colors.red,));
+        scoreKeeper.add(Icon(
+          Icons.close,
+          color: Colors.red,
+        ));
       }
       quizBrain.nextQuestion();
-
+      }
     });
   }
-
-//  Question q1 = Question(q:'You can lead a cow down stairs but not up stairs.',a:false);
-//  Question q2 = Question(q:'Approximately one quarter of human bones are in the feet.',a:true);
-//  Question q3 = Question(q:'A slug\'s blood is green.',a:true);
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -117,8 +145,13 @@ class _QuizPageState extends State<QuizPage> {
         Row(
           children: scoreKeeper,
         )
-       
       ],
     );
   }
 }
+
+/*
+question1: 'You can lead a cow down stairs but not up stairs.', false,
+question2: 'Approximately one quarter of human bones are in the feet.', true,
+question3: 'A slug\'s blood is green.', true,
+*/
