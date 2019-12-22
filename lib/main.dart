@@ -40,11 +40,11 @@ class _QuizPageState extends State<QuizPage> {
       //HINT! Step 4 Part B is in the quiz_brain.dart
       //TODO: Step 4 Part C - reset the questionNumber,
       //TODO: Step 4 Part D - empty out the scoreKeeper.
-      if (quizBrain.isFinished()){
+      if (quizBrain.isFinished()) {
         Alert(
-          context: context,
-          title: 'Finished!',
-          desc: 'You\'ve reached the end of the quiz.',
+            context: context,
+            title: 'Finished!',
+            desc: 'You\'ve reached the end of the quiz.',
             buttons: [
               DialogButton(
                 child: Text(
@@ -54,29 +54,27 @@ class _QuizPageState extends State<QuizPage> {
                 onPressed: () => Navigator.pop(context),
                 width: 120,
               )
-            ]
-        ).show();
+            ]).show();
 
         quizBrain.reset();
 
         scoreKeeper = [];
       }
 
-
       //TODO: Step 5 - If we've not reached the end, ELSE do the answer checking steps below 👇
-      else{
+      else {
         if (userPickedAnswer == correctAnswer) {
-        scoreKeeper.add(Icon(
-          Icons.check,
-          color: Colors.green,
-        ));
-      } else {
-        scoreKeeper.add(Icon(
-          Icons.close,
-          color: Colors.red,
-        ));
-      }
-      quizBrain.nextQuestion();
+          scoreKeeper.add(Icon(
+            Icons.check,
+            color: Colors.green,
+          ));
+        } else {
+          scoreKeeper.add(Icon(
+            Icons.close,
+            color: Colors.red,
+          ));
+        }
+        quizBrain.nextQuestion();
       }
     });
   }
